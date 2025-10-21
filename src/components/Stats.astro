@@ -1,0 +1,14 @@
+---
+interface Stat { value: string; label: string; }
+const { items = [] as Stat[] } = Astro.props;
+---
+<section class="section surface">
+  <div class="stats">
+    {items.map((s:Stat) => (
+      <article class="stat">
+        <h2>{s.value}</h2>
+        <p>{s.label}</p>
+      </article>
+    ))}
+  </div>
+</section>

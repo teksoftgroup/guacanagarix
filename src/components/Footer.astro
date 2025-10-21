@@ -1,10 +1,10 @@
 ---
+import { Image } from "astro:assets"
 ---
 <footer class="bg-white dark:bg-gray-900">
   <div class="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
     <div class="xl:grid xl:grid-cols-3 xl:gap-8">
-      <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="Company name" class="h-9 dark:hidden" />
-      <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Company name" class="h-9 not-dark:hidden" />
+      <Image src="/public/images/gig_logo_no_background.png" height={250} width={250} alt="Images logo"></Image>
       <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
         <div class="md:grid md:grid-cols-2 md:gap-8">
           <div>
@@ -77,5 +77,6 @@
         </div>
       </div>
     </div>
+      <p class="p-10 rounded-md mt-10 text-center text-sm/6 text-gray-700 dark:text-gray-400 h-20">&copy; 2025 Guacanagarix Investment Group, All rights reserved.</p>
   </div>
 </footer>

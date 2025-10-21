@@ -1,0 +1,51 @@
+---
+interface Props {
+  /** CSS selector for the carousel container */
+  targetSelector?: string;
+  /** Autoplay interval in ms */
+  intervalMs?: number;
+}
+
+const {
+  targetSelector = "#hero-carousel",
+  intervalMs = 5000,
+} = Astro.props;
+---
+
+<!-- Optional marker for debugging -->
+<div class="sr-only" aria-hidden="true">
+  CarouselAuto targeting {targetSelector} every {intervalMs}ms
+</div>
+
+<script is:inline define:vars={{ selector: targetSelector, delay: intervalMs }}>
+  // Tell TypeScript the types of the injected vars:
+  const selector = "";
+  const delay = 0;
+
+  (() => {
+    const carousel = document.querySelector(selector);
+    if (!carousel) return;
+
+    const items = Array.from(
+      carousel.querySelectorAll<HTMLElement>(".carousel-item[id]")
+    );
+    if (!items.length) return;
+
+    let i = Math.max(0, items.findIndex(el => `#${el.id}` === location.hash));
+
+    const go = (next) => {
+      i = (next + items.length) % items.length;
+      const id = items[i].id;
+      location.hash = `#${id}`;
+    };
+
+    let timer = window.setInterval(() => go(i + 1), delay);
+
+    const pause = () => { if (timer !== null) { clearInterval(timer); timer = null; } };
+    const resume = () => { if (timer === null) { timer = window.setInterval(() => go(i + 1), delay); } };
+
+    carousel.addEventListener("mouseenter", pause);
+    carousel.addEventListener("mouseleave", resume);
+    document.addEventListener("visibilitychange", () => document.hidden ? pause() : resume);
+  })();
+</script>

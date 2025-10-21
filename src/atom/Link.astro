@@ -1,0 +1,60 @@
+---
+import clsx from 'clsx';
+
+interface Props {
+    href: string;
+    exact?: boolean;
+    hashMode?: boolean;
+    activeClass?:string;
+    inactiveClass?:string;
+}
+
+const {
+    href,
+    exact = false,
+    hashMode = false,
+    activeClass = "",
+    inactiveClass = ""
+} = Astro.props
+
+const { pathname: currentPath, hash: currentHash} = Astro.url;
+
+let targetPath = "";
+let targetHash = "";
+
+if(href.startsWith("#")){
+    targetPath = currentPath;
+    targetHash = href;
+}
+else {
+    const parsed = new URL(href, 'http://local/');
+    targetPath = parsed.pathname.endsWith("/") && parsed.pathname !== "/"
+    ? parsed.pathname.slice(0,-1)
+    : parsed.pathname;
+
+    targetHash = parsed.hash;
+}
+
+
+const normalizeCurrentPath = currentPath.endsWith("/") && currentPath !== "/"
+ ? currentPath.slice(0,-1)
+ : currentPath;
+
+ const isPathActive = exact 
+? normalizeCurrentPath === targetPath
+: normalizeCurrentPath.startsWith(targetPath) && targetPath !== "/";
+
+const isActive = hashMode
+? (currentPath === targetHash && targetHash !== "")
+: isPathActive;
+
+const classes = clsx(
+ "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
+  isActive ? activeClass : inactiveClass
+)
+
+---
+
+<a href={href} class={classes} aria-current={isActive? "page": undefined}>
+    <slot />
+</a>
