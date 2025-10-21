@@ -19,8 +19,8 @@ const {
 
 <script is:inline define:vars={{ selector: targetSelector, delay: intervalMs }}>
   // Tell TypeScript the types of the injected vars:
-  const selector = "";
-  const delay = 0;
+  let selector = "";
+  let delay = 0;
 
   (() => {
     const carousel = document.querySelector(selector);
